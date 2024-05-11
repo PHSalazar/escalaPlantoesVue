@@ -24,12 +24,34 @@ const contarPlantoes = (nomePessoa) => {
         const mesEvento = getMonth(dados.pessoa.start);
 
         const novaLista = plantoesJSON.filter(user => user.nome.toLowerCase() === nomePessoa.toLowerCase() && mesEvento === getMonth(user.start));
+
+        let totalDias = 0;
+
+        novaLista.map(({nome, start, end}) => {
+           totalDias += days_between(start, end);
+        });
+
         let frase;
-        (novaLista.length > 1) ? frase = `${novaLista.length} plantões` : frase = `${novaLista.length} plantão`;
+        (totalDias > 1) ? frase = `${totalDias} plantões` : frase = `${totalDias} plantão`;
 
         return frase;
 
     }
+}
+
+function days_between(date1, date2) {
+
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+  let date_ini = new Date(date1);
+  let date_end = new Date(date2);
+
+  let diff = date_end.getTime() - date_ini.getTime();
+
+  return Math.floor(diff / day);
 }
 </script>
 <template>

@@ -70,8 +70,8 @@ onMounted(() => {
         <div class="listContainer">
             <table>
                 <thead>
-                    <th>Entrada</th>
-                    <th>Saída</th>
+                    <th>Início</th>
+                    <th>Final</th>
                     <th>Ações</th>
                 </thead>
                 <tr v-for="dataPlantao in datasPlantoes" class="itemDataPlantao">

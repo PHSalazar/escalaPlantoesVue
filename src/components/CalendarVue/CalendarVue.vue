@@ -118,7 +118,7 @@ const handleDeleteLocalStorage = () => {
     </template>
 
     <button @click="handleDeleteLocalStorage">
-        Apagar LocalStorage
+        Apagar escala COMPLETA
     </button>
 </template>
 
