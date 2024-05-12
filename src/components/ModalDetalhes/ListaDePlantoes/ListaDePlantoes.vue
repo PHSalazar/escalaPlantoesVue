@@ -1,23 +1,9 @@
 <script setup>
-const dados = defineProps(['nome', 'mes']);
+const dados = defineProps(['nome', 'mes', 'fds', 'diasTotal']);
 import { ref, onMounted } from 'vue';
 
 const numeroPlantoes = ref([]);
 const datasPlantoes = ref([]);
-
-const formatDate = (date) => {
-    const newDate = new Date(date);
-    let dd = newDate.getDate();
-    let mm = newDate.getMonth() + 1;
-    const yyyy = newDate.getFullYear();
-
-    dd < 10 ? dd = '0' + dd : dd;
-    mm < 10 ? mm = '0' + mm : mm;
-
-    const dateFullFormated = `${dd}/${mm}/${yyyy}`;
-
-    return dateFullFormated;
-}
 
 const getMonth = (date) => {
     const newDate = new Date(date);
@@ -68,6 +54,8 @@ onMounted(() => {
 <template>
     <div class="wrapper">
         <div class="listContainer">
+            <h4>Todos os Plantões ({{ dados.diasTotal }})</h4>
+
             <table>
                 <thead>
                     <th>Início</th>
@@ -76,7 +64,7 @@ onMounted(() => {
                 </thead>
                 <tr v-for="dataPlantao in datasPlantoes" class="itemDataPlantao">
                     <th>
-                        {{ formatDate(dataPlantao.start) }}
+                        {{ new Date(dataPlantao.start).toLocaleDateString('pt-BR') }}
                     </th>
                     <th>
                         {{ formatDateReduce(dataPlantao.end, 1) }}
@@ -92,11 +80,32 @@ onMounted(() => {
                 </tr>
 
             </table>
+
+            <hr>
+
+            <h4>Finais de Semana ({{ dados.fds.length }})</h4>
+
+            <table>
+                <thead>
+                    <th>Data</th>
+                </thead>
+                <tr v-for="dataPlantaoFinalSemana in dados.fds" class="itemDataPlantao">
+                    <th>
+                        {{ dataPlantaoFinalSemana }}
+                    </th>
+                </tr>
+
+            </table>
+
+           
         </div>
     </div>
 </template>
 
 <style scoped>
+h4 {
+    color: var(--color-blue);
+}
 .wrapper {
     height: 290px;
     overflow-y: auto;
@@ -116,7 +125,7 @@ table {
     border-collapse: collapse;
 }
 thead {
-    background-color: #212529;
+    background-color: var(--color-green);
     color: #fff;
     height: 30px;
 }
@@ -142,5 +151,9 @@ tr:nth-child(odd) {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+hr {
+    margin: 10px;
 }
 </style>

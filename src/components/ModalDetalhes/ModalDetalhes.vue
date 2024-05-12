@@ -4,6 +4,10 @@ import ListaDePlantoes from './ListaDePlantoes/ListaDePlantoes.vue';
 const dados = defineProps(['pessoa']);
 const emit = defineEmits(['closeModalDetalhes']);
 
+let numeroFinaisDeSemana = 0;
+let diasFinaisDeSemana = [];
+let totalDiasPlantoes = 0;
+
 const closeModal = (element) => {
     if (!element.target.closest('.modalContent')) {
         emit('closeModalDetalhes');
@@ -25,18 +29,45 @@ const contarPlantoes = (nomePessoa) => {
 
         const novaLista = plantoesJSON.filter(user => user.nome.toLowerCase() === nomePessoa.toLowerCase() && mesEvento === getMonth(user.start));
 
-        let totalDias = 0;
+        
+        
 
         novaLista.map(({nome, start, end}) => {
-           totalDias += days_between(start, end);
+            totalDiasPlantoes += days_between(start, end);
+           numeroFinaisDeSemana += (contarFinaisDeSemana(start, end));
         });
 
         let frase;
-        (totalDias > 1) ? frase = `${totalDias} plantões` : frase = `${totalDias} plantão`;
+        (totalDiasPlantoes > 1) ? frase = `${totalDiasPlantoes} plantões` : frase = `${totalDiasPlantoes} plantão`;
 
         return frase;
 
     }
+}
+
+
+const contarFinaisDeSemana = (dataInicio, dataFinal) => {
+    let dates = [];
+    let finaisDeSemana = 0;
+
+    let currentDate = new Date(dataInicio);
+    const endDate = new Date(dataFinal);
+
+    while (currentDate < endDate) {
+        dates.push(new Date(currentDate));
+        
+        if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
+            // 0 DOmingo, 6 Sabado
+            finaisDeSemana += 1;
+            diasFinaisDeSemana.push(currentDate.toLocaleDateString('pt-BR'));
+        }
+
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+
+
+    return finaisDeSemana;
 }
 
 function days_between(date1, date2) {
@@ -46,13 +77,14 @@ function days_between(date1, date2) {
     const hour = minute * 60;
     const day = hour * 24;
 
-  let date_ini = new Date(date1);
-  let date_end = new Date(date2);
+    let date_ini = new Date(date1);
+    let date_end = new Date(date2);
 
-  let diff = date_end.getTime() - date_ini.getTime();
+    let diff = date_end.getTime() - date_ini.getTime();
 
-  return Math.floor(diff / day);
+    return Math.floor(diff / day);
 }
+
 </script>
 <template>
     <div class="modal" @click="closeModal">
@@ -63,6 +95,8 @@ function days_between(date1, date2) {
             <ListaDePlantoes
             :nome="dados.pessoa.nome"
             :mes="dados.pessoa.start"
+            :fds="diasFinaisDeSemana"
+            :diasTotal="totalDiasPlantoes"
             />
         </div>
     </div>
