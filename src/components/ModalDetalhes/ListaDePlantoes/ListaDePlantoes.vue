@@ -11,7 +11,7 @@ const getMonth = (date) => {
     return months[newDate.getMonth()];
 }
 
-const buscarPlantoesPorNome = (nomePessoa) =>{
+const buscarPlantoesPorNome = (nomePessoa) => {
     const plantoes = localStorage.getItem("plantoesPHS");
 
     if (plantoes) {
@@ -85,7 +85,7 @@ onMounted(() => {
 
             <h4>Finais de Semana ({{ dados.fds.length }})</h4>
 
-            <p v-if="dados.fds.length === 0">
+            <p v-if="dados.fds.length === 0" class="noLegend">
                 Nenhum plantão de {{ dados.nome }} cai no final de semana.
             </p>
             <table v-else >
@@ -159,5 +159,8 @@ tr:nth-child(odd) {
 
 hr {
     margin: 10px;
+}
+.noLegend {
+    text-align: center;
 }
 </style>
