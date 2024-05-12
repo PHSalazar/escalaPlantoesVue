@@ -85,16 +85,20 @@ onMounted(() => {
 
             <h4>Finais de Semana ({{ dados.fds.length }})</h4>
 
-            <table>
-                <thead>
-                    <th>Data</th>
-                </thead>
-                <tr v-for="dataPlantaoFinalSemana in dados.fds" class="itemDataPlantao">
-                    <th>
-                        {{ dataPlantaoFinalSemana }}
-                    </th>
-                </tr>
-
+            <p v-if="dados.fds.length === 0">
+                Nenhum plantão de {{ dados.nome }} cai no final de semana.
+            </p>
+            <table v-else >
+                    <thead>
+                        <th>Data</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dataPlantaoFinalSemana in dados.fds" class="itemDataPlantao">
+                            <th >
+                                {{ dataPlantaoFinalSemana }}
+                            </th>
+                        </tr>
+                    </tbody>
             </table>
 
            
