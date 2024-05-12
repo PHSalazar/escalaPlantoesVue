@@ -45,6 +45,26 @@ const formatDateReduce = (date, numberToReduce) => {
     return dateFullFormatted;
 }
 
+const deletarPlantao = (dado) => {
+    const plantoes = localStorage.getItem("plantoesPHS");
+    if (plantoes) {
+        let plantoesJSON = JSON.parse(plantoes);
+
+        plantoesJSON = plantoesJSON.filter(plantao => {
+            return (
+                plantao.nome !== dado.nome ||
+                plantao.start !== dado.start ||
+                plantao.end !== dado.end ||
+                plantao.color !== dado.color
+            );
+        });
+        localStorage.setItem("plantoesPHS", JSON.stringify(plantoesJSON));
+        location.reload();
+    }
+}
+
+
+
 onMounted(() => {
     buscarPlantoesPorNome(dados.nome);
 })
@@ -73,7 +93,7 @@ onMounted(() => {
                         <button class="btnAction">
                             <img src="../../../assets/icoEdit.svg" alt="Ícone Editar" width="16px" height="16px">
                         </button>
-                        <button class="btnAction">
+                        <button class="btnAction" @click='deletarPlantao(dataPlantao)'>
                             <img src="../../../assets/icoDelete.svg" alt="Ícone delete" width="16px" height="16px">
                         </button>
                     </th>
