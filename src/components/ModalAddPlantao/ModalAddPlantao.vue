@@ -79,13 +79,13 @@ const handleAddPlantonistaCalendario = (event) => {
 
         //Salvando nova escala no localstorage
         const plantoes = localStorage.getItem('plantoesPHS');
-        
+        let nomeProfissionalTrim = nomeProfissional.value.trim();
 
         if (plantoes) {
             let plantoesArray = JSON.parse(plantoes);
             
             const escala = {
-                nome: nomeProfissional.value, 
+                nome: nomeProfissionalTrim, 
                 start: intervalDateStart, 
                 end: intervalDateEnd, 
                 color
@@ -100,7 +100,7 @@ const handleAddPlantonistaCalendario = (event) => {
 
         }else{
             const escala = [{
-                nome: nomeProfissional.value, 
+                nome: nomeProfissionalTrim, 
                 start: intervalDateStart, 
                 end: intervalDateEnd, 
                 color
@@ -111,7 +111,7 @@ const handleAddPlantonistaCalendario = (event) => {
         }
         let incluirEscala = {};
         incluirEscala = {
-            nome: nomeProfissional.value, 
+            nome: nomeProfissionalTrim, 
             start: intervalDateStart, 
             end: intervalDateEnd, 
             color

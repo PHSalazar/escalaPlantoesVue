@@ -131,7 +131,7 @@ h4 {
     color: var(--color-blue);
 }
 .wrapper {
-    height: 290px;
+    height: auto;
     overflow-y: auto;
 }
 .listContainer {

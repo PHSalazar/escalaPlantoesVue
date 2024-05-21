@@ -12,7 +12,8 @@ const showModalDetalhes = ref(false);
 
 const selectionDateStart = ref(null);
 const selectionDateEnd = ref(null);
-const eventosPlantoes = reactive([]);
+let eventosPlantoes = reactive([]);
+const nomesPlantonistas = reactive([]);
 
 const clickedEventTitle = ref('');
 
@@ -55,7 +56,11 @@ const handleCloseModalDetahes = () => {
     showModalDetalhes.value = false;
 }
 
-const carregarPlantoesLocalStorage = () => {
+
+const filtrarPlantoes = (element) => {
+    const nomePlantonista = element.target.value;
+    eventosPlantoes.splice(0);
+
     const plantoesLocalStorage = localStorage.getItem("plantoesPHS");
     if (plantoesLocalStorage) {
         let plantoesJSON = JSON.parse(plantoesLocalStorage);
@@ -67,10 +72,34 @@ const carregarPlantoesLocalStorage = () => {
                 color: color
             }
 
+            if (novoEventoCalendario.title === nomePlantonista) {
+                eventosPlantoes.push(novoEventoCalendario);
+            }else if (nomePlantonista === 'todos') {
+                eventosPlantoes.push(novoEventoCalendario);
+            }
+        })
+    }
+    
+}
+
+const carregarPlantoesLocalStorage = () => {
+    const plantoesLocalStorage = localStorage.getItem("plantoesPHS");
+    if (plantoesLocalStorage) {
+        let plantoesJSON = JSON.parse(plantoesLocalStorage);
+        plantoesJSON.map(({nome, start, end, color}) => {
+            const novoEventoCalendario = {
+                title: nome,
+                start: start,
+                end: end,
+                color: color
+            }
+            nomesPlantonistas.indexOf(novoEventoCalendario.title) === -1 && nomesPlantonistas.push(novoEventoCalendario.title);
+
             eventosPlantoes.push(novoEventoCalendario);
         })
     }
 }
+
 onMounted(() => {
     carregarPlantoesLocalStorage();
 });
@@ -78,6 +107,9 @@ onMounted(() => {
 const handleSubmitModalAddPlantao = (arg) => {
 
     const novoEvento = {title: arg.nome, start: new Date(arg.start), end: new Date(arg.end), color: arg.color};
+
+    nomesPlantonistas.indexOf(novoEvento.title) === -1 && nomesPlantonistas.push(novoEvento.title);
+
 
     eventosPlantoes.push(novoEvento)
     showModalAddPlantao.value = false;
@@ -96,6 +128,15 @@ const handleDeleteLocalStorage = () => {
 
 
 <template>
+
+    <p class="filterContainer">
+        Mostrar plantões de:
+        <select :onchange="filtrarPlantoes">
+        <option value="todos">Todos</option>
+        <option v-for="plantonista in nomesPlantonistas" :value="plantonista">{{ plantonista }}</option>
+        </select>
+
+    </p>
     <div class="calendar">
         <FullCalendar :options="calendarOptions" />
     </div>
@@ -130,6 +171,12 @@ const handleDeleteLocalStorage = () => {
 
 
 <style>
+    .filterContainer {
+        font-family: 'Poppins', sans-serif !important;
+        font-weight: 400;
+        text-align: center;
+        margin: 10px auto;
+    }
     .calendar {
         width: 90vw;
         height: 500px;

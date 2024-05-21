@@ -9,8 +9,10 @@ let diasFinaisDeSemana = [];
 let totalDiasPlantoes = 0;
 
 const closeModal = (element) => {
-    if (!element.target.closest('.modalContent')) {
+    if (!element.target.closest('.modalContent') || element.target.className === 'buttonCloseModal') {
         emit('closeModalDetalhes');
+    }else{
+        console.log(element.target.className)
     }
 }
 
@@ -90,7 +92,7 @@ function days_between(date1, date2) {
     <div class="modal" @click="closeModal">
         <div class="modalContent">
             <h2>Detalhes</h2>
-            <p style="padding-top: 10px;"><b>{{ dados.pessoa.nome }}</b> tem {{ contarPlantoes(dados.pessoa.nome) }} no mês de <b>{{ getMonth(dados.pessoa.start) }}</b>.</p>
+            <p style="padding-top: 10px;"><b>{{ dados.pessoa.nome }}</b> tem {{ contarPlantoes(dados.pessoa.nome) }} no mês de <b>{{ getMonth(dados.pessoa.start) }}</b>, dos {{ totalDiasPlantoes }} plantões, <b>{{ diasFinaisDeSemana.length }}</b>  {{ diasFinaisDeSemana.length === 1 ? 'cai Final' : 'caem Finais' }}  de Semana.</p>
 
             <ListaDePlantoes
             :nome="dados.pessoa.nome"
@@ -98,12 +100,41 @@ function days_between(date1, date2) {
             :fds="diasFinaisDeSemana"
             :diasTotal="totalDiasPlantoes"
             />
+
+            <button class="buttonCloseModal" @click="closeModal">Fechar detalhes</button>
         </div>
     </div>
 </template>
 
 
 <style>
+.buttonCloseModal {
+            padding: 10px;
+            background: none;
+            border: 0;
+            outline: none;
+
+            background: #CC3827;
+            border-radius: 20px;
+            color: #fff;
+
+            display: block;
+            margin: 10px auto;
+
+            font-size: 1em;
+
+            cursor: pointer;
+
+            &:hover {
+                opacity: .8;
+            }
+        
+            position: absolute;
+            top: 20px;
+            right: 40px;
+        }
+
+
 .modal {
     position: fixed;
     top: 0;
@@ -118,8 +149,8 @@ function days_between(date1, date2) {
 
     .modalContent {
         background: #fff;
-        width: 500px;
-        height: 400px;
+        width: calc(100vw - 40px);
+        height: calc(100vh - 40px);
         padding: 0 15px;
 
         h2 {
