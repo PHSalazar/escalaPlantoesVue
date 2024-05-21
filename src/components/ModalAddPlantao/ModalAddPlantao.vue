@@ -73,13 +73,14 @@ const obterItemChaveProfissional = (nomeProcurado, valorProcurado) => {
 
 const handleAddPlantonistaCalendario = (event) => {
     event.preventDefault();
-    
+    let nomeProfissionalTrim = nomeProfissional.value.trim();
+
     if (nomeProfissional.value.trim() != '') {
-        const color = obterItemChaveProfissional(nomeProfissional.value, "color");
+        const color = obterItemChaveProfissional(nomeProfissionalTrim, "color");
 
         //Salvando nova escala no localstorage
         const plantoes = localStorage.getItem('plantoesPHS');
-        let nomeProfissionalTrim = nomeProfissional.value.trim();
+        
 
         if (plantoes) {
             let plantoesArray = JSON.parse(plantoes);

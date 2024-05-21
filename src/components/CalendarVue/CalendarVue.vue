@@ -179,7 +179,7 @@ const handleDeleteLocalStorage = () => {
     }
     .calendar {
         width: 90vw;
-        height: 500px;
+        height: 650px;
         margin: 20px auto;
     }
     .fc .fc-daygrid-day-bottom {
